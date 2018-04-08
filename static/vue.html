@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>game-offline</title>
+	<meta name='HandheldFriendly' content='true' />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name='viewport' content='width=360,user-scalable=0' />
+	<link rel="stylesheet" href="./css/main.css" >
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.13/dist/vue.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<style type="text/css">
+	html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+html,body{
+    height:100%;
+	width:100%;
+	font-size: 62.5%
+}
+
+	</style>
+</head>
+<body>
+	<div class="container-fluid">
+		<div id="app">
+			<template v-if="!message">
+				<h1 class="heading">You must send a message for help!</h1>
+				<p>Dispatch a messenger immediately!</p>
+				<p>To nearby kingdom of Hearts!</p>
+			</template>
+			<h2 v-else>You have sent a message!</h2>
+			<h2 v-show="showTitle">Enter Your Name:</h2>
+			
+			<input v-model="message">
+			<ul class="list-group">
+				<li class="list-group-item" v-for="item in items">{{item}}</li>
+			</ul>
+		</div>
+
+		<div id="app2">
+			<story-heading></story-heading>
+			<br />
+			<ul class="list-group">
+				<li v-for="item in stories" class="list-group-item">
+					<story v-bind:item="item" custom="true"></story>
+				</li>
+			</ul>
+			<br />
+			<button class="btn btn-primary" @click="order">Reverse Order</button>
+			<br />
+			<bs-card></bs-card>
+			<div class="input-group mb-3">
+				<div class="input-group-prepend">
+				  <span class="input-group-text">Upload</span>
+				</div>
+				<div class="custom-file">
+				  <input type="file" class="custom-file-input" id="inputGroupFile01" @change="chooseImage">
+				  <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+				</div>
+			  </div>
+		</div>
+	</div>
+	<template id = 'story-heading'>
+		<h1>Let's hear some stories!</h1>
+	</template>
+	<script src = './js/main.js'></script>
+</body>
+
+</html>

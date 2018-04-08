@@ -1,0 +1,9 @@
+{
+    "port": 9000,
+    "staticPath": "./static",
+    "cacheControl": true,
+    "expores": true,
+    "etag": true,
+    "lastModified": true,
+    "maxAge": 5
+}
