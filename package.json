@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon start.js"
+    "start": "nodemon app.js --exec babel-node",
+    "pm2": "pm2 start start.js --name app"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -16,11 +17,13 @@
     "koa": "2.0.0",
     "koa-bodyparser": "^3.2.0",
     "koa-cors": "0.0.16",
-    "koa-multer": "^1.0.2",
     "koa-router": "7.0.0",
     "koa-static": "^4.0.2"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-0": "^6.24.1",
     "nodemon": "^1.17.1"
   }
 }
