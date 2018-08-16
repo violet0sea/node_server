@@ -18,7 +18,7 @@ app.use(bodyParser());
 const { staticPath, port } = config;
 
 app.use(async (ctx, next) => {
-    console.log(`${ctx.request.method} ${ctx.request.url}`);
+    console.log(`${new Date()} ${ctx.request.method} ${ctx.request.url}`);
     await next();
 })
 

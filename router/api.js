@@ -1,6 +1,6 @@
 import Router from 'koa-router';
 import path from 'path';
-import fs from 'fs';
+import fs, { exists } from 'fs';
 const formparser = require('co-busboy');
 
 const apiRouter = Router();
@@ -9,24 +9,49 @@ class Api {
     static routes(app) {
         
         // all api define
+        apiRouter.get('/userinfo', async (ctx, next) => {
+
+            const data = {
+                id: 1,
+                name: 'lemon',
+                age: 22
+            };
+            ctx.response.body = {
+                code: 0,
+                data,
+                message: 'succ'
+            }
+
+        });
+        
         apiRouter.post('/upload', async (ctx, next) => {
-            var parts = formparser(ctx.request);
-            console.log(ctx.request.body)
-            var part, fileNames = [];
+            const parts = formparser(ctx.request);
+            let part, fileNames = [];
             part = await parts();
-            // while(part) {
-                var filename = part.filename
-                console.log('filename', filename, part);
-                fileNames.push(filename);
-                var homeDir = path.resolve(__dirname, '..');
-                var newpath = path.join(homeDir,'upload', filename);
-                console.log(newpath);
-                var stream = fs.createWriteStream(newpath);
+
+            const filename = part.filename
+            fileNames.push(filename);
+            const homeDir = path.resolve(__dirname, '..');
+            const uploadDir = path.join(homeDir,'upload');
+            fs.exists(uploadDir, exists => {
+                if(!exists) {
+                    fs.mkdirSync(uploadDir);
+                }
+
+                const newpath = path.join(uploadDir, filename);
+
+                const stream = fs.createWriteStream(newpath);
                 part.on('data', (chunk) => {
                     stream.write(chunk)
                 })
+                rs.on('end', function () {
+                    console.log('END');
+                    stream.end()
+                });
+            })
 
-            // }
+
+     
             if(fileNames.length > 0) {
                 ctx.response.body = {
                     code: 0,
@@ -39,6 +64,8 @@ class Api {
         app.use(apiRouter.routes());
 
     }
+
+
 }
 
 export default Api
