@@ -16,6 +16,8 @@ class Api {
                 name: 'lemon',
                 age: 22
             };
+            // ctx.redirect('https://koajs.com')
+            ctx.cookies.set('name', 'frank', {maxAge: 600000, path: '/userinfo'})
             ctx.response.body = {
                 code: 0,
                 data,

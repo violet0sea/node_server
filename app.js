@@ -9,6 +9,7 @@ const fs = require('fs');
 
 import myRouter from './router';
 const config = require('./config/default.json');
+const sendMail = require('./controllers/mail');
 
 const app = new Koa();
 app.use(cors());
@@ -18,6 +19,7 @@ app.use(bodyParser());
 const { staticPath, port } = config;
 
 app.use(async (ctx, next) => {
+    console.log(ctx.cookies.get('name'))
     console.log(`${new Date()} ${ctx.request.method} ${ctx.request.url}`);
     await next();
 })
