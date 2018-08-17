@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon app.js --exec babel-node",
+    "start_pro": "cross-env NODE_ENV=production nodemon app.js --exec babel-node",
     "pm2": "pm2 start start.js --name app"
   },
   "dependencies": {
@@ -25,6 +26,7 @@
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-0": "^6.24.1",
+    "cross-env": "^5.2.0",
     "nodemon": "^1.17.1"
   }
 }
