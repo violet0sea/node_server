@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon app.js --exec babel-node",
+    "start_pro": "cross-env NODE_ENV=production nodemon app.js --exec babel-node",
     "pm2": "pm2 start start.js --name app"
   },
   "dependencies": {
@@ -18,12 +19,14 @@
     "koa-bodyparser": "^3.2.0",
     "koa-cors": "0.0.16",
     "koa-router": "7.0.0",
-    "koa-static": "^4.0.2"
+    "koa-static": "^4.0.2",
+    "nodemailer": "^4.6.8"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-0": "^6.24.1",
+    "cross-env": "^5.2.0",
     "nodemon": "^1.17.1"
   }
 }

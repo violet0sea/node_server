@@ -16,9 +16,11 @@ app.use(bodyParser());
 
 
 const { staticPath, port } = config;
-
+// app.env = 'production'
 app.use(async (ctx, next) => {
-    console.log(`${ctx.request.method} ${ctx.request.url}`);
+    console.log(ctx.cookies.get('name'));
+    console.log('NODE_ENV: ', app.env);
+    console.log(`${new Date()} ${ctx.request.method} ${ctx.request.url}`);
     await next();
 })
 
