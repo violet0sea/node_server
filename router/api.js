@@ -9,8 +9,8 @@ class Api {
     static routes(app) {
         
         // all api define
-        apiRouter.get('/userinfo', async (ctx, next) => {
-
+        apiRouter.get('/userinfo/:name', async (ctx, next) => {
+            console.log('NAME: ', ctx.params)
             const data = {
                 id: 1,
                 name: 'lemon',
@@ -46,7 +46,7 @@ class Api {
                 part.on('data', (chunk) => {
                     stream.write(chunk)
                 })
-                rs.on('end', function () {
+                part.on('end', function () {
                     console.log('END');
                     stream.end()
                 });
