@@ -6,12 +6,28 @@ const serve = require('koa-static');
 const path = require('path');
 const fs = require('fs');
 const mysql = require('mysql');
+const mongo = require('mongodb');
 import myRouter from './router';
 const dbConf = require('./config/db');
 
 
 const config = require('./config/default.json');
 const { staticPath, port } = config;
+
+// mongodb连接
+const mongoClient = mongo.MongoClient;
+const mongoUrl = "mongodb://localhost:27017";
+
+mongoClient.connect(mongoUrl, (err, db) => {
+    if(err) {
+        throw err;
+    }
+    console.log('mongodb is connected!');
+    const database = db.db('test');
+    database.collection('koa').find().toArray((err, result) => {
+        console.log(result);
+    })
+})
 
 // app.env = 'production'
 
@@ -25,10 +41,7 @@ connection.query('select * from tbl', function(error, result, fields) {
     if(error) {
         throw error;
     }
-
-    console.log('result:', result);
 });
-
 
 const app = new Koa();
 app.use(cors());
@@ -75,5 +88,7 @@ myRouter.routes(app);
 app.use(bodyParser());
 app.use(router.routes());
 app.listen(port);
+
+
 
 console.log(`App is listen at port ${port}....`);

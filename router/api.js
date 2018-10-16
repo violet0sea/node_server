@@ -2,6 +2,7 @@ import Router from 'koa-router';
 import path from 'path';
 import fs, { exists } from 'fs';
 const formparser = require('co-busboy');
+const Stream = require('stream');
 
 const apiRouter = Router();
 
@@ -18,12 +19,33 @@ class Api {
             };
             // ctx.redirect('https://koajs.com')
             ctx.cookies.set('name', 'frank', {maxAge: 600000, path: '/userinfo'})
+            ctx.response.append('Set-Cookie', 'age=23; maxAge: 600000; path:/userinfo')
+            // ctx.response.status = 200;
+            // ctx.response.lastModified = '2018-08-08T10:05:00';
+            // ctx.response.etag = 'W/"123456789"'
+            // ctx.response.set('Foo', ['bar', 'baz']);
+            ctx.set('Foo', ['bar', 'baz']);
+            // ctx.response.set('Set-Cookie','sex=male; maxAge: 600000; path:/userinfo')
             ctx.response.body = {
                 code: 0,
                 data,
                 message: 'succ'
-            }
+            };
+            // ctx.response.redirect('back', '/index.html');
 
+
+        });
+        // all api define
+        apiRouter.get('/download/*', async (ctx, next) => {    
+            console.log('download url', ctx.request.path)
+            const file = path.join(__dirname, '..', ctx.url.replace('download', 'upload'));
+            ctx.response.body = fs.createReadStream(file);
+        });
+        apiRouter.get('/svg/*', async (ctx, next) => {    
+            console.log('download url', ctx.request.path)
+            const file = path.join(__dirname, '..', ctx.url.replace('svg', 'upload'));
+            ctx.set('Content-Type', 'image/svg+xml')
+            ctx.response.body = fs.createReadStream(file);
         });
         
         apiRouter.post('/upload', async (ctx, next) => {
