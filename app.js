@@ -4,46 +4,12 @@ const cors = require('koa-cors');
 const bodyParser = require('koa-bodyparser');
 const serve = require('koa-static');
 const path = require('path');
-const fs = require('fs');
-const http = require('http');
 const request = require('request');
-const mysql = require('mysql');
-const mongo = require('mongodb');
 import myRouter from './router';
-const dbConf = require('./config/db');
-
 
 const config = require('./config/default.json');
 const { staticPath, port } = config;
 
-// mongodb连接
-const mongoClient = mongo.MongoClient;
-const mongoUrl = "mongodb://localhost:27017";
-
-mongoClient.connect(mongoUrl, (err, db) => {
-    if(err) {
-        throw err;
-    }
-    console.log('mongodb is connected!');
-    const database = db.db('test');
-    database.collection('koa').find().toArray((err, result) => {
-        console.log(result);
-    })
-})
-
-// app.env = 'production'
-
-const connection = mysql.createConnection({
-    ...dbConf
-});
-
-connection.connect();
-
-connection.query('select * from tbl', function(error, result, fields) {
-    if(error) {
-        throw error;
-    }
-});
 
 const app = new Koa();
 app.use(cors());
@@ -79,31 +45,6 @@ router.post('/signin', async (ctx, next) => {
     }
     await next();
 });
-
-router.get('/api/v1', async(ctx, next) => {
-
-    const host = 'http://api.douban.com'; // 需要代理的服务器主机   http://api.douban.com/v2/movie/nowplaying?apikey=0df993c66c0c636e29ecbb5344252a4a
-    // getaddrinfo ENOTFOUND 报错 host不可以加http
-    const path = '/v2/movie/nowplaying?apikey=0df993c66c0c636e29ecbb5344252a4a'; // 请求路径
-    const reqPromise = function() {
-        return new Promise((res, rej) => {
-            request(host+path, (err, response, body) => {
-                console.log(`1111`)
-                res(body)
-            });
-        })
-    }
-    let res = await reqPromise();
-    console.log(typeof res, res)
-    const body = {
-        header: 1,
-        data: JSON.parse(res)
-    }
-    // res.setEncoding('utf8');
-    ctx.set('Content-Type', 'application/json')
-    ctx.response.body = body;
-    
-})
 
 
 router.get('/hello/:name', async (ctx, next) => {

@@ -2,7 +2,7 @@ import Router from 'koa-router';
 import path from 'path';
 import fs, { exists } from 'fs';
 const formparser = require('co-busboy');
-const Stream = require('stream');
+const request = require('request');
 
 const apiRouter = Router();
 
@@ -84,6 +84,30 @@ class Api {
             }
 
         });
+
+        apiRouter.get('/api/v1', async(ctx, next) => {
+
+            const host = 'http://api.douban.com'; // 需要代理的服务器主机   http://api.douban.com/v2/movie/nowplaying?apikey=0df993c66c0c636e29ecbb5344252a4a
+            // getaddrinfo ENOTFOUND 报错 host不可以加http
+            const path = '/v2/movie/nowplaying?apikey=0df993c66c0c636e29ecbb5344252a4a'; // 请求路径
+            const reqPromise = function() {
+                return new Promise((res, rej) => {
+                    request(host+path, (err, response, body) => {
+                        res(body)
+                    });
+                })
+            }
+            let res = await reqPromise();
+            console.log(typeof res, res)
+            const body = {
+                header: 1,
+                data: JSON.parse(res)
+            }
+            // res.setEncoding('utf8');
+            ctx.set('Content-Type', 'application/json')
+            ctx.response.body = body;
+            
+        });        
 
         app.use(apiRouter.routes());
 
