@@ -5,6 +5,8 @@ const bodyParser = require('koa-bodyparser');
 const serve = require('koa-static');
 const path = require('path');
 const fs = require('fs');
+const http = require('http');
+const request = require('request');
 const mysql = require('mysql');
 const mongo = require('mongodb');
 import myRouter from './router';
@@ -75,12 +77,39 @@ router.post('/signin', async (ctx, next) => {
         ctx.response.body = `<h1>Login failed!</h1>
         <p><a href="/">Try again</a></p>`;
     }
+    await next();
 });
+
+router.get('/api/v1', async(ctx, next) => {
+
+    const host = 'http://api.douban.com'; // 需要代理的服务器主机   http://api.douban.com/v2/movie/nowplaying?apikey=0df993c66c0c636e29ecbb5344252a4a
+    // getaddrinfo ENOTFOUND 报错 host不可以加http
+    const path = '/v2/movie/nowplaying?apikey=0df993c66c0c636e29ecbb5344252a4a'; // 请求路径
+    const reqPromise = function() {
+        return new Promise((res, rej) => {
+            request(host+path, (err, response, body) => {
+                console.log(`1111`)
+                res(body)
+            });
+        })
+    }
+    let res = await reqPromise();
+    console.log(typeof res, res)
+    const body = {
+        header: 1,
+        data: JSON.parse(res)
+    }
+    // res.setEncoding('utf8');
+    ctx.set('Content-Type', 'application/json')
+    ctx.response.body = body;
+    
+})
 
 
 router.get('/hello/:name', async (ctx, next) => {
     var name = ctx.params.name;
     ctx.response.body = `<h1>Hello, ${name}!</h1>`;
+    await next();
 });
 
 myRouter.routes(app);
