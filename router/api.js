@@ -85,29 +85,51 @@ class Api {
 
         });
 
-        apiRouter.get('/api/v1', async(ctx, next) => {
+        // apiRouter.get('/api/v1', async(ctx, next) => {
 
-            const host = 'http://api.douban.com'; // 需要代理的服务器主机   http://api.douban.com/v2/movie/nowplaying?apikey=0df993c66c0c636e29ecbb5344252a4a
-            // getaddrinfo ENOTFOUND 报错 host不可以加http
-            const path = '/v2/movie/nowplaying?apikey=0df993c66c0c636e29ecbb5344252a4a'; // 请求路径
-            const reqPromise = function() {
-                return new Promise((res, rej) => {
-                    request(host+path, (err, response, body) => {
-                        res(body)
-                    });
-                })
-            }
-            let res = await reqPromise();
-            console.log(typeof res, res)
-            const body = {
-                header: 1,
-                data: JSON.parse(res)
-            }
-            // res.setEncoding('utf8');
-            ctx.set('Content-Type', 'application/json')
-            ctx.response.body = body;
+        //     const host = 'http://api.douban.com'; // 需要代理的服务器主机   http://api.douban.com/v2/movie/nowplaying?apikey=0df993c66c0c636e29ecbb5344252a4a
+        //     // getaddrinfo ENOTFOUND 报错 host不可以加http
+        //     const path = '/v2/movie/nowplaying?apikey=0df993c66c0c636e29ecbb5344252a4a'; // 请求路径
+        //     const reqPromise = function() {
+        //         return new Promise((res, rej) => {
+        //             request(host+path, (err, response, body) => {
+        //                 res(body)
+        //             });
+        //         })
+        //     }
+        //     let res = await reqPromise();
+        //     console.log(typeof res, res)
+        //     const body = {
+        //         header: 1,
+        //         data: JSON.parse(res)
+        //     }
+        //     // res.setEncoding('utf8');
+        //     ctx.set('Content-Type', 'application/json')
+        //     ctx.response.body = body;
             
-        });        
+        // });
+        // apiRouter.all('/ativity/album/upload', async(ctx, next) => {
+        //     console.log('proxy1111', ctx.url)
+        //     const host = 'sandbox.activity.browser.intl.miui.com'; // 需要代理的服务器主机   http://api.douban.com/v2/movie/nowplaying?apikey=0df993c66c0c636e29ecbb5344252a4a
+        //     req.pipe(request(url)).pipe(res);
+        //     // const reqPromise = function() {
+        //     //     return new Promise((res, rej) => {
+        //     //         request(host+ctx.url, (err, response, body) => {
+        //     //             res(body)
+        //     //         });
+        //     //     })
+        //     // }
+        //     // let res = await reqPromise();
+        //     // console.log(typeof res, res)
+        //     // const body = {
+        //     //     header: 1,
+        //     //     data: JSON.parse(res)
+        //     // }
+        //     // // res.setEncoding('utf8');
+        //     // ctx.set('Content-Type', 'application/json')
+        //     // ctx.response.body = body;
+            
+        // });          
 
         app.use(apiRouter.routes());
 
